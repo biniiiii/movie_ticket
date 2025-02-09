@@ -5,12 +5,14 @@ const movieDetails = {
 };
 
 function selectMovie(movieIndex) {
-    if (movieDetails[movieIndex]) {
+    if (movieDetails.hasOwnProperty(movieIndex)) { // Check if the movieIndex exists in movieDetails
         localStorage.setItem("selectedMovieIndex", movieIndex);
         localStorage.setItem("selectedMovieName", movieDetails[movieIndex].name);
         localStorage.setItem("selectedMoviePrice", movieDetails[movieIndex].price);
 
         // Redirect to booking page
         window.location.href = "booking.html";
+    } else {
+        alert("Invalid movie selection. Please try again."); // Error message if movieIndex doesn't exist
     }
 }
