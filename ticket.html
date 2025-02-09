@@ -4,48 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Movie Ticket</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-image: url(pics/1.jpg);
-      background-size: cover;
-    }
-    .ticket {
-      background: #000000;
-      color: white;
-      width: 350px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-    .ticket h1 {
-      margin-bottom: 10px;
-    }
-    .ticket p {
-      margin: 5px 0;
-    }
-    .ticket .barcode img {
-      width: 100%;
-      height: auto;
-      margin-top: 15px;
-    }
-    .home-btn {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 15px;
-    }
-  </style>
+<link rel="stylesheet" href="ticket.css">
 </head>
 <body>
   <div class="ticket">
@@ -59,26 +18,8 @@
     <button class="home-btn" onclick="goHome()">Back to Home</button>
   </div>
 
-  <script>
-    function loadTicketDetails() {
-      const bookingData = JSON.parse(localStorage.getItem("bookingData"));
-      if (bookingData) {
-        document.getElementById("ticket-movie").innerText = bookingData.movieName;
-        document.getElementById("ticket-seatCount").innerText = bookingData.seatCount + " seat(s)";
-        document.getElementById("ticket-totalPrice").innerText = bookingData.totalPrice;
-      } else {
-        document.querySelector(".ticket").innerHTML = "<p>No booking data found.</p>";
-      }
-    }
-
-    function goHome() {
-      // Do not clear sold seats data so booked seats remain white.
-      // If you want to remove bookingData only:
-      localStorage.removeItem("bookingData");
-      window.location.href = "index.html";
-    }
-
-    loadTicketDetails();
+  <script src="ticket.js">
+    
   </script>
 </body>
 </html>

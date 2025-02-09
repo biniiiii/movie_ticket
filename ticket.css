@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url(pics/1.jpg);
+    background-size: cover;
+  }
+  .ticket {
+    background: #000000;
+    color: white;
+    width: 350px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .ticket h1 {
+    margin-bottom: 10px;
+  }
+  .ticket p {
+    margin: 5px 0;
+  }
+  .ticket .barcode img {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+  }
+  .home-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
