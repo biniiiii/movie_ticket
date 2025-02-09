@@ -1,4 +1,3 @@
-// Get references
 const container = document.querySelector(".container");
 const count = document.getElementById("count");
 const total = document.getElementById("total");
@@ -6,36 +5,42 @@ const movieSelect = document.getElementById("movie");
 const confirmButton = document.getElementById("confirmBooking");
 const viewTicketButton = document.getElementById("viewTicket");
 
-// Stack for selected seats (LIFO)
 let selectedSeatsStack = [];
-
-// Queue for confirmed bookings (FIFO)
 let confirmedSeatsQueue = [];
-
 let ticketPrice = +movieSelect.value;
 
-// Load sold seats on page load
+function showModal(message, showResultButton = false) {
+  document.getElementById("modalMessage").innerText = message;
+  document.getElementById("confirmationModal").style.display = "block";
+
+  if (showResultButton) {
+    document.getElementById("viewResultButton").style.display = "inline-block";
+  } else {
+    document.getElementById("viewResultButton").style.display = "none";
+  }
+}
+
+function closeModal() {
+  document.getElementById("confirmationModal").style.display = "none";
+}
+
 function loadSoldSeats() {
   const soldIndices = JSON.parse(localStorage.getItem("soldSeats")) || [];
   const allSeats = document.querySelectorAll(".row .seat");
   soldIndices.forEach(index => allSeats[index]?.classList.add("sold"));
 }
 
-// Update selected seat count
 function updateSelectedCount() {
   count.innerText = selectedSeatsStack.length;
   total.innerText = selectedSeatsStack.length * ticketPrice;
 }
 
-// Toggle seat selection using Stack (LIFO)
 container.addEventListener("click", (e) => {
   if (e.target.classList.contains("seat") && !e.target.classList.contains("sold")) {
     if (e.target.classList.contains("selected")) {
-      // Remove last selected seat (Undo using Stack)
       selectedSeatsStack.pop();
       e.target.classList.remove("selected");
     } else {
-      // Push newly selected seat onto Stack
       selectedSeatsStack.push(e.target);
       e.target.classList.add("selected");
     }
@@ -43,50 +48,68 @@ container.addEventListener("click", (e) => {
   }
 });
 
-// Confirm Booking using Queue (FIFO)
 confirmButton.addEventListener("click", () => {
   if (selectedSeatsStack.length === 0) {
-    alert("No seats selected!");
+    showModal("No seats selected!");
     return;
   }
 
-  if (confirm("Confirm your booking?")) {
-    let soldIndices = JSON.parse(localStorage.getItem("soldSeats")) || [];
-    const allSeats = document.querySelectorAll(".row .seat");
+  let confirmBooking = confirm(`Confirm booking for ${selectedSeatsStack.length} seat(s)?`);
+  if (!confirmBooking) return;
 
-    // Process stack and add to queue
-    while (selectedSeatsStack.length > 0) {
-      let seat = selectedSeatsStack.pop(); // LIFO (removes last added)
-      seat.classList.add("sold");
-      seat.classList.remove("selected");
+  let soldIndices = JSON.parse(localStorage.getItem("soldSeats")) || [];
+  const allSeats = document.querySelectorAll(".row .seat");
 
-      // Add seat index to sold list
-      let seatIndex = [...allSeats].indexOf(seat);
-      soldIndices.push(seatIndex);
+  while (selectedSeatsStack.length > 0) {
+    let seat = selectedSeatsStack.pop();
+    seat.classList.add("sold");
+    seat.classList.remove("selected");
 
-      // Enqueue to confirmed queue (FIFO)
-      confirmedSeatsQueue.push(seatIndex);
-    }
-
-    localStorage.setItem("soldSeats", JSON.stringify(soldIndices));
-    localStorage.setItem("bookingData", JSON.stringify({
-      movieName: movieSelect.options[movieSelect.selectedIndex].text,
-      seatCount: confirmedSeatsQueue.length,
-      totalPrice: confirmedSeatsQueue.length * ticketPrice
-    }));
-
-    updateSelectedCount();
-    alert("Seats booked successfully!");
+    let seatIndex = [...allSeats].indexOf(seat);
+    soldIndices.push(seatIndex);
+    confirmedSeatsQueue.push(seatIndex);
   }
+
+  localStorage.setItem("soldSeats", JSON.stringify(soldIndices));
+  localStorage.setItem("bookingData", JSON.stringify({
+    movieName: movieSelect.options[movieSelect.selectedIndex].text,
+    seatCount: confirmedSeatsQueue.length,
+    totalPrice: confirmedSeatsQueue.length * ticketPrice
+  }));
+
+  updateSelectedCount();
+  showModal("Seats booked successfully!", true);
 });
 
-// View Ticket
+function showConfirmedSeats() {
+  const confirmedSeatsContainer = document.getElementById("confirmedSeatsContainer");
+  const confirmedSeatsList = document.getElementById("confirmedSeatsList");
+
+  confirmedSeatsList.innerHTML = "";
+  confirmedSeatsQueue.forEach(seatIndex => {
+    const li = document.createElement("li");
+    li.textContent = `Seat Number: ${seatIndex + 1}`;
+    confirmedSeatsList.appendChild(li);
+  });
+
+  confirmedSeatsContainer.style.display = "block";
+  closeModal();
+}
+
+function hideConfirmedSeats() {
+  document.getElementById("confirmedSeatsContainer").style.display = "none";
+}
+
 viewTicketButton.addEventListener("click", () => {
-  window.location.href = "ticket.html"; // Redirect to ticket page
+  window.location.href = "ticket.html";
 });
 
-// Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
   loadSoldSeats();
+  updateSelectedCount();
+});
+
+movieSelect.addEventListener("change", () => {
+  ticketPrice = +movieSelect.value;
   updateSelectedCount();
 });

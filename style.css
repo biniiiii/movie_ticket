@@ -99,6 +99,84 @@
         font-size: 16px;
         border-radius: 5px;
       }
+      .modal {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+        z-index: 1000;
+        text-align: center;
+      }
+    
+      .modal-content {
+        color: black;
+      }
+    
+      .modal button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+    
+      .modal button:hover {
+        opacity: 0.8;
+      }
+    
+      #confirmedSeatsContainer {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        color: black;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+        text-align: center;
+        z-index: 1001;
+        min-width: 300px;
+      }
+    
+      .confirmed-seats-content {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+    
+      #confirmedSeatsList {
+        list-style: none;
+        padding: 0;
+      }
+    
+      #confirmedSeatsList li {
+        margin: 5px 0;
+        padding: 5px;
+        background: lightgray;
+        border-radius: 5px;
+      }
+    
+      #confirmedSeatsContainer button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+    
+      #confirmedSeatsContainer button:hover {
+        opacity: 0.8;
+      }
 
       .button:hover {
         opacity: 0.8;

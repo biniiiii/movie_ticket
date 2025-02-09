@@ -124,6 +124,18 @@
       <button class="button confirm" id="confirmBooking">Confirm Booking</button>
     </div>
   </div>
+  <div id="confirmedSeatsContainer">
+    <h3>Confirmed Seats</h3>
+    <ul id="confirmedSeatsList"></ul>
+    <button onclick="hideConfirmedSeats()">Close</button>
+  </div>
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <p id="modalMessage"></p>
+      <button id="modalOkButton" onclick="closeModal()">OK</button>
+      <button id="viewResultButton" style="display: none;" onclick="showConfirmedSeats()">View Result</button>
+    </div>
+  </div>
 <script src="script.js"></script>
 </body>
 </html>
